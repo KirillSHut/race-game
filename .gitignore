@@ -1,0 +1,8 @@
+# System and IDE files
+
+# Vendors
+node_modules/
+
+# Build
+dist/
+/npm-debug.log
