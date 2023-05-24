@@ -22,8 +22,8 @@ export default class Map {
 
     createCollision() {
         this.tilemap.findObject('collisions', collision => {
-            const sprite = this.scene.matter.add.sprite(collision.x, collision.y, 'objects', collision.name);
-            sprite.setOrigin(0, 1);
+            const sprite = this.scene.matter.add.sprite(collision.x + collision.width / 2, collision.y - collision.height / 2, 'objects', collision.name);
+            // sprite.setOrigin(0, 1);
             sprite.setStatic(true);
         })
     }
