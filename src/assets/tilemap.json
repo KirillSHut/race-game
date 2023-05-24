@@ -4750,40 +4750,6 @@
                      "name": "checkpoints",
                      "objects": [
                             {
-                                   "height": 199.464,
-                                   "id": 457,
-                                   "name": "",
-                                   "properties": [
-                                          {
-                                                 "name": "type",
-                                                 "type": "string",
-                                                 "value": "checkpoint"
-                                          },
-                                          {
-                                                 "name": "value",
-                                                 "type": "string",
-                                                 "value": "2"
-                                          }
-                                   ],
-                                   "rotation": 0,
-                                   "type": "",
-                                   "visible": false,
-                                   "width": 281.596,
-                                   "x": 715.722,
-                                   "y": 3.35233
-                            },
-                            {
-                                   "height": 0,
-                                   "id": 459,
-                                   "name": "",
-                                   "rotation": 0,
-                                   "type": "",
-                                   "visible": true,
-                                   "width": 5.02849,
-                                   "x": 757.627,
-                                   "y": 68.7228
-                            },
-                            {
                                    "height": 200,
                                    "id": 463,
                                    "name": "checkpoint",

@@ -11,6 +11,8 @@ export default class Player {
         this.car = this.scene.matter.add.sprite(position.x, position.y, 'objects', 'car_blue_1');
         this.car.setFixedRotation(true);
         this._velocity = 0;
+        this.checkpoint = 0;
+        this.laps = 0;
     }
 
     get direction() {
@@ -29,16 +31,21 @@ export default class Player {
 
     get velocity() {
         const speed = Math.abs(this._velocity);
+        const max = this.getMaxSpeed();
 
-        if (this.direction && speed < SPEED) {
+        if (this.direction && speed < max) {
             this._velocity += ACCELERATION * Math.sign(this.direction);
         }
-        if (!this.direction && speed > 0) {
+        if ((this.direction && speed > max) || (!this.direction && speed > 0)) {
             this._velocity -= ACCELERATION * Math.sign(this._velocity);
         }
 
 
         return this._velocity;
+    }
+
+    getMaxSpeed() {
+        return SPEED * this.map.getTileFriction(this.car)
     }
 
     getVelocityFromAngle() {
@@ -67,6 +74,30 @@ export default class Player {
     move() {
         const velocity = this.getVelocityFromAngle();
         this.car.setAngle(this.angle);
-        this.car.setVelocity(velocity.x, velocity.y)
+        this.car.setVelocity(velocity.x, velocity.y);
+        this.checkChekpoints();
+    }
+
+    get lap() {
+        return this.laps + 1;
+    }
+
+    checkChekpoints() {
+        const checkpoint = this.map.getCheckpoint(this.car);
+
+        if (checkpoint) {
+            this.onCheckpoint(checkpoint);
+        }
+    }
+
+    onCheckpoint(checkpoint) {
+        console.log(this.checkpoint, checkpoint);
+        if (checkpoint === 1 && this.checkpoint === this.map.checkpoints.length) {
+            this.checkpoint = 1;
+            ++this.laps;
+            this.car.emit('lap', this.lap);
+        } else if (checkpoint == this.checkpoint + 1) {
+            ++this.checkpoint;
+        }
     }
 }
