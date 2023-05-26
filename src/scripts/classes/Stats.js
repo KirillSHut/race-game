@@ -3,7 +3,7 @@ export default class Stats {
     constructor(scene, laps) {
         this.scene = scene;
         this.laps = laps;
-        this.currentLap = 0;
+        this.currentLap = 1;
         this.time = 0;
         this.timeLap = 0;
         this.timeBestLap = 0;
@@ -11,7 +11,7 @@ export default class Stats {
     }
 
     get completed() {
-        return this.currentLap + 1 > this.laps;
+        return this.currentLap - 1 == this.laps;
     }
 
     onLapComplete() {

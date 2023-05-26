@@ -3,6 +3,7 @@ import Map from "../classes/Map";
 import Player from "../classes/Player";
 import Stats from "../classes/Stats";
 import StatsPanel from "../classes/StatsPanel";
+import StatsPopup from "../classes/StatsPopup";
 
 const LAPS = 2;
 
@@ -41,14 +42,16 @@ export default class GameScene extends Phaser.Scene {
         this.stats.onLapComplete();
 
         if (this.stats.completed) {
-            this.scene.restart();
+            this.statsPopup = new StatsPopup(this, this.stats);
         }
     }
 
     update(time, dt) {
-        this.stats.update(dt);
-        this.statsPanel.render();
-        this.player.move();
+        if (!this.stats.completed) {
+            this.stats.update(dt);
+            this.statsPanel.render();
+            this.player.move();
+        }
     }
 
 
