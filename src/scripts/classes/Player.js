@@ -2,6 +2,7 @@ const DIRECTIONS = Object.freeze({ BACKWARDS: -1, NONE: 0, FORWARD: 1 });
 const TURN = Object.freeze({ LEFT: -1, NONE: 0, RIGHT: 1 });
 const SPEED = 10;
 const ACCELERATION = 0.5;
+const SLIDE_ANGLE = 5;
 
 export default class Player {
     constructor(scene, map) {
@@ -12,7 +13,6 @@ export default class Player {
         this.car.setFixedRotation(true);
         this._velocity = 0;
         this.checkpoint = 0;
-        this.laps = 0;
     }
 
     get direction() {
@@ -53,6 +53,10 @@ export default class Player {
         return vec2.setToPolar(this.car.rotation - Math.PI / 2, this.velocity);
     }
 
+    slide() {
+        this.car.angle += SLIDE_ANGLE;
+    }
+
     get turn() {
         let turn = TURN.NONE;
         const cursors = this.scene.cursors;
@@ -78,10 +82,6 @@ export default class Player {
         this.checkChekpoints();
     }
 
-    get lap() {
-        return this.laps + 1;
-    }
-
     checkChekpoints() {
         const checkpoint = this.map.getCheckpoint(this.car);
 
@@ -91,10 +91,8 @@ export default class Player {
     }
 
     onCheckpoint(checkpoint) {
-        console.log(this.checkpoint, checkpoint);
         if (checkpoint === 1 && this.checkpoint === this.map.checkpoints.length) {
             this.checkpoint = 1;
-            ++this.laps;
             this.car.emit('lap', this.lap);
         } else if (checkpoint == this.checkpoint + 1) {
             ++this.checkpoint;

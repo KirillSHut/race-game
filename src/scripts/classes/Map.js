@@ -19,13 +19,13 @@ export default class Map {
         this.createLayer();
         this.createCollision();
         this.createCheckPoint();
+        this.createOils();
     }
 
     createCheckPoint() {
         this.checkpoints = [];
         this.tilemap.findObject('checkpoints', checkpoint => {
             let rectangle = new Phaser.Geom.Rectangle(checkpoint.x, checkpoint.y, checkpoint.width, checkpoint.height);
-            console.log(checkpoint);
             rectangle.index = checkpoint.properties.find(property => property.name === 'value').value;
             this.checkpoints.push(rectangle);
         })
@@ -36,6 +36,13 @@ export default class Map {
         return checkpoint ? parseInt(checkpoint.index) : false;
     }
 
+    createOils() {
+        this.tilemap.findObject('oils', oil => {
+            const sprite = this.scene.matter.add.sprite(oil.x + oil.width / 2, oil.y - oil.height / 2, 'objects', 'oil');
+            sprite.setStatic(true);
+            sprite.setSensor(true);
+        });
+    }
 
     createLayer() {
         this.tilemap.createStaticLayer('grass', this.tileset);
@@ -47,7 +54,6 @@ export default class Map {
     createCollision() {
         this.tilemap.findObject('collisions', collision => {
             const sprite = this.scene.matter.add.sprite(collision.x + collision.width / 2, collision.y - collision.height / 2, 'objects', collision.name);
-            // sprite.setOrigin(0, 1);
             sprite.setStatic(true);
         })
     }

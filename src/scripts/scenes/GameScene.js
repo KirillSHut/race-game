@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import Map from "../classes/Map";
 import Player from "../classes/Player";
+import Stats from "../classes/Stats";
 
 const LAPS = 1;
 
@@ -19,16 +20,20 @@ export default class GameScene extends Phaser.Scene {
     create() {
         this.map = new Map(this);
         this.player = new Player(this, this.map);
+        this.stats = new Stats(this, LAPS);
 
         this.cameras.main.setBounds(0, 0, this.map.tilemap.widthInPixels, this.map.tilemap.heightInPixels);
         this.cameras.main.startFollow(this.player.car);
         this.player.car.on('lap', this.onLapComplete, this);
+        this.matter.world.on('collisionactive', (event, a, b) => {
+            if (b.gameObject === this.player.car && a.gameObject.frame.name === 'oil') {
+                this.player.slide();
+            }
+        })
     }
 
-    onLapComplete(lap) {
-        if (lap > LAPS) {
-            this.scene.restart();
-        }
+    onLapComplete() {
+        this.stats.onLapComplete();
     }
 
     update() {
