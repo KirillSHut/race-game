@@ -33,6 +33,7 @@ export default class Player {
         const speed = Math.abs(this._velocity);
         const max = this.getMaxSpeed();
 
+
         if (this.direction && speed < max) {
             this._velocity += ACCELERATION * Math.sign(this.direction);
         }
